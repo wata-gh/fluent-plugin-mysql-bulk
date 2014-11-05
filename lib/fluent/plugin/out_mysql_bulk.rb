@@ -107,6 +107,12 @@ module Fluent
         @key_names.each_with_index do |key, i|
           if key == '${time}'
             value = Time.at(time).strftime('%Y-%m-%d %H:%M:%S')
+          elsif key == '${json}'
+            value = record.to_s
+          elsif key == 'time_local'
+            value = DateTime.parse(record[key]).strftime('%Y-%m-%d %H:%M:%S')
+          elsif key.start_with?("'") && key.end_with?("'")
+            value = key
           else
             if @max_lengths[i].nil? || record[key].nil?
               value = record[key]
