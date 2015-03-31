@@ -108,10 +108,12 @@ module Fluent
           if key == '${time}'
             value = Time.at(time).strftime('%Y-%m-%d %H:%M:%S')
           elsif key == '${json}'
-            value = record.to_s
+            value = record.to_json
           elsif key == 'time_local'
             value = DateTime.parse(record[key]).strftime('%Y-%m-%d %H:%M:%S')
           elsif key.start_with?("'") && key.end_with?("'")
+            value = key
+          elsif key == '0' || key == '1'
             value = key
           else
             if @max_lengths[i].nil? || record[key].nil?
